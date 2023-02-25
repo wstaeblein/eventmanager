@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Event Manager</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="eventsManager.js"></script>
+        <style>
+            body {
+                font-family: 'Open Sans', sans-serif;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            main {
+                max-width: 1000px;
+                width: 100%;
+                margin: auto;
+                display: flex;
+                justify-content: center;
+            }
+
+            main > div {
+                padding: 0 20px;
+                width: calc(100% - 40px);
+            }
+
+            h1 {
+                margin-bottom: 5px;
+                text-align: center;
+                text-transform: uppercase;
+            }
+
+            details p {
+                margin: 5px 0;
+                color: #ccc;
+            }
+
+            .center {
+                text-align: center;
+            }
+
+            .right {
+                text-align: right;
+            }
+
+            summary {
+                font-size: larger;
+                text-transform: uppercase;
+                cursor: pointer;
+                user-select: none;                
+            }
+
+            details > div > div {
+                margin: 10px 0;
+                
+            }
+
+            button.btn {
+                width: 2em;
+                height: 2em;
+                background-color: #f2f2f2;
+                border: 1px solid #888;
+                position: relative;
+                cursor: pointer;
+                padding: 0;
+                border-radius: 4px;
+                transition: all 0.4s ease;
+            }
+
+            button.btn:hover {
+                background-color: var(--color);
+            }
+
+            button.btn::before {
+                content: '';
+                position: absolute;
+                width: 1.2em;
+                height: 1.2em;
+                background: var(--color);
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: auto;
+                border-radius: 50%;
+                border: 1px solid #666;
+            }
+
+            .box {
+                width: 100%;
+                border: 1px solid #888;
+                padding: 10px;
+                white-space: pre-line;
+            }
+
+            .link {
+                font-size: smaller;
+                color: darkblue;
+                cursor: pointer;
+                text-decoration: none;
+                transition: all 0.3s ease;
+                opacity: 0.6;
+            }
+            .link:hover {
+                text-decoration: underline;
+                opacity: 1;
+            }
+
+            .posimg {
+                display: flex;
+                height: 600px;
+                padding: 5px;
+                position: relative;
+                border: 1px solid #888;
+                margin: 30px;
+            }
+            
+            .posimg.left {
+                justify-content: left;
+            }
+
+            .posimg.top {
+                align-items: flex-start;
+            }
+
+            .posimg.right {
+                justify-content: right;
+            }     
+
+            .posimg.bottom {
+                align-items: flex-end;
+            }
+           
+            .posimg.leftright {
+                justify-content: center;
+            }
+            .posimg.topbottom {
+                align-items: center;
+            }            
+
+            .posimg > img {
+                max-width: 500px;
+                max-height: 500px;
+                width: 100%;
+                object-fit: contain;
+            }
+
+            .posimg span {
+                font-size: 52px;
+                opacity: 0.5;
+                position: absolute;
+                transition: opacity 0.4s ease;
+                cursor: pointer;
+                color: #888;
+                user-select: none;
+            }
+
+            .posimg span[data-on="1"] {
+                color: crimson;
+                opacity: 1 !important;
+            }
+
+            .posimg span:hover {
+                opacity: 1;
+            }
+
+            .posimg span.lft {
+                top: 50%;
+                transform: translateY(-50%);
+                left: -33px;
+            }
+
+            .posimg span.rgt {
+                top: 50%;
+                transform: translateY(-50%);
+                right: -36px;
+            }      
+            
+            .posimg span.top {
+                top: -51px;
+                transform: translateX(-50%);
+                left: 50%;
+            }     
+            
+            .posimg span.bot {
+                bottom: -39px;
+                transform: translateX(-50%);
+                left: 50%;
+            }      
+            
+            #casetext {
+                width: 100%;
+                height: 160px;
+                resize: vertical;
+                padding: 10px;
+                font-size: 18px;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <div>
+                <h1>Event Manager</h1>
+                <p class="center">A class to facilitate the handling of events</p>
+
+                <details open>
+                    <summary>Uppercase Text</summary>
+                    <p>Type in the box below and use the dropdown to set the desired case</p>
+                    <div class="casetext">
+                        <div class="right">
+                            <select id="caseOpts">
+                                <option value="u">Upper Case</option>
+                                <option value="l">Lower Case</option>
+
+                            </select>
+                        </div>
+                        <textarea id="casetext"></textarea>
+                    </div>
+                </details>                    
+
+                <br><br><hr><br><br>
+
+
+                <details open>
+                    <summary>Change Colors</summary>
+                    <p>Use the buttons below to change background and foreground colors of the textarea</p>
+                    <div>
+                        <div>
+                            <button id="bkg_red"    class="bkg btn" style="--color: red"></button>
+                            <button id="bkg_yellow" class="bkg btn" style="--color: #ffc900"></button>
+                            <button id="bkg_green"  class="bkg btn" style="--color: forestgreen"></button>
+                            <button id="bkg_blue"   class="bkg btn" style="--color: dodgerblue"></button>
+                            <button id="bkg_black"  class="bkg btn" style="--color: black"></button>
+                            <button id="bkg_white"  class="bkg btn" style="--color: white"></button>
+                        </div>
+                        <div class="box">Always forgive your enemies; nothing annoys them so much.
+
+                            True friends stab you in the front.
+
+                            I have the simplest of tastes. I am always satisfied with the best.
+
+                            To live is the rarest thing in the world. Most people exist, that is all.
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div>
+                                <button id="clr_red"    class="clr btn" style="--color: red"></button>
+                                <button id="clr_yellow" class="clr btn" style="--color: #ffc900"></button>
+                                <button id="clr_green"  class="clr btn" style="--color: forestgreen"></button>
+                                <button id="clr_blue"   class="clr btn" style="--color: dodgerblue"></button>
+                                <button id="clr_black"  class="clr btn" style="--color: black"></button>
+                                <button id="clr_white"  class="clr btn" style="--color: white"></button>
+                            </div>
+                            <div>
+                                <select id="removeColors">
+                                    <optgroup label="Remove">
+                                        <option value="-all">Remove all events</option>
+                                        <option value="-bkg" selected>Remove background color events</option>
+                                        <option value="-text">Remove text color events</option>
+                                    </optgroup>
+                                    <optgroup label="Attach">
+                                        <option value="+all">Attach all events</option>
+                                        <option value="+bkg">Attach background color events</option>
+                                        <option value="+text">Attach text color events</option>
+                                    </optgroup>
+                                </select>
+                                <button onclick="manage()">Process</button>
+                            </div>
+                        </div>
+                    </div>
+                  </details>
+
+                  <br><br><hr><br><br>
+
+                  <details open>
+                    <summary>Position Image</summary>
+                    <p>Use the arrows below to position the image inside it's box</p>
+                    <div class="posimg">
+                        <img src="./img.jpg" alt="Image" />
+                        <span class="lft imgpos" data-val="1" data-on="0">⏴</span>
+                        <span class="rgt imgpos" data-val="2" data-on="0">⏵</span>
+                        <span class="top imgpos" data-val="3" data-on="0">⏶</span>
+                        <span class="bot imgpos" data-val="4" data-on="0">⏷</span>
+                    </div>
+                  </details>                  
+
+            </div>
+
+        </main>
+
+
+        <script>
+            let evtMan = new eventsManager();
+            
+            evtMan.on(window, 'keyup', (evt) => { 
+                if (evt.key == 'Escape') { 
+                   evtMan.off();
+                   alert('All Events Removed');
+                }
+            });
+
+
+            // Uppercase text
+            let casetext = document.getElementById('casetext');
+            let caseopt = document.getElementById('caseOpts');
+            evtMan.on(casetext, 'input', handleTextCase);
+            evtMan.on(caseopt, 'change', handleTextCase);
+
+            function handleTextCase(evt) {
+                switch(caseopt.value) {
+                    case 'u': casetext.value = casetext.value.toUpperCase(); break;
+                    case 'l': casetext.value = casetext.value.toLowerCase(); break;
+                    default: casetext.value = casetext.value.toUpperCase(); break;
+                }
+                casetext.focus();
+            }
+            
+            // Change Colors
+            // -------------
+            let box = document.querySelector('.box');
+            let getAttr = (ele) => ele.getAttribute('style').split(':').pop().trim();
+            let txtColors = document.querySelectorAll('.clr');
+            let bkgColors = document.querySelectorAll('.bkg');
+
+
+            function manage() {
+                let op = document.getElementById('removeColors').value;
+                switch (op) {
+                    case '-all': evtMan.off('.colors'); break;
+                    case '-text': evtMan.off('.clr', null); break;
+                    case '-bkg': evtMan.off('.bkg', null); break;
+
+                    case '+all': attach(); break;
+                    case '+text': attach('text'); break;
+                    case '+bkg': attach('bkg'); break;                    
+                }
+                
+            }
+
+            function handleTextColors(evt) { box.style.color      = getAttr(evt.target); }
+            function handleBackColors(evt) { box.style.background = getAttr(evt.target); }
+
+            function attach(op) {
+                if (op != '+bkg')  { evtMan.on(txtColors, 'click.colors', handleTextColors); }
+                if (op != '+text') { evtMan.on(bkgColors, 'click.colors', handleBackColors); }
+            }
+
+            attach();
+
+
+            // Position Image
+            // --------------
+            let posimg = document.querySelector('.posimg');  
+            let controls = document.querySelectorAll('.imgpos'); 
+
+            evtMan.on(controls, 'click', setPosition);
+            
+            function toPosition() {
+                let vert = '', horz = '';
+                let arrPos = ['', 'left', 'right', 'top', 'bottom'];
+                
+                let ctrls = [...controls].filter((c) => c.getAttribute('data-on') == '1'); console.log(ctrls)
+                ctrls.forEach((c) => { 
+                    let val = +c.getAttribute('data-val'); 
+                    if (val < 3) { horz += arrPos[val]; } else { vert += arrPos[val]; }
+                    console.log(val, ' -- ', horz, '-- ' , vert)
+                });
+
+                posimg.className  = 'posimg ' + horz + ' ' + vert;
+            }
+
+            function setPosition(evt) {
+                let tgt = evt.target;
+                tgt.setAttribute('data-on', tgt.getAttribute('data-on') == '0' ? '1' : '0');
+                toPosition();
+            }
+
+
+        </script>
+    </body>
+</html>
